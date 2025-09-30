@@ -130,28 +130,31 @@
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h3 class="text-4xl font-extrabold text-gray-800 mb-2">¿Tienes alguna consulta?</h3>
-                <p class="text-xl text-gray-600">Déjanos un mensaje y te responderemos a la brevedad.</p>
-                <p class="text-lg font-bold text-gray-700 mt-4">También puedes contactarnos por WhatsApp: +54 351 786-3863</p>
+                <!-- Mensaje actualizado para indicar que el botón abrirá WhatsApp -->
+                <p class="text-xl text-gray-600">Completa tus datos y te enviaremos la consulta directamente a WhatsApp:</p>
+                <p class="text-lg font-bold text-gray-700 mt-4">WhatsApp de Contacto: +54 351 786-3863</p>
             </div>
 
             <div class="bg-white p-6 sm:p-10 rounded-xl shadow-2xl border border-gray-200">
+                <!-- Se elimina el action y se deja el manejo por JS -->
                 <form id="contact-form" class="space-y-6">
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo</label>
                         <input type="text" id="name" name="name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150" placeholder="Tu nombre">
                     </div>
-                    <!-- CAMPO ACTUALIZADO: Número de WhatsApp con nuevo texto de placeholder -->
+                    <!-- CAMPO ACTUALIZADO: Número de WhatsApp para contacto directo y lista de difusión -->
                     <div>
                         <label for="whatsapp" class="block text-sm font-medium text-gray-700 mb-1">Número de WhatsApp</label>
                         <input type="tel" id="whatsapp" name="whatsapp" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150" placeholder="Ej: 351 123 4567 (recibí todas las semanas el menú en tu celu)">
                     </div>
                     <div>
-                        <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Mensaje</label>
+                        <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Mensaje/Consulta</label>
                         <textarea id="message" name="message" rows="4" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150" placeholder="Escribe tu consulta aquí..."></textarea>
                     </div>
                     <div>
+                        <!-- Botón ahora dice "Abrir WhatsApp y Enviar" para ser más claro -->
                         <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-bold text-lg hover:bg-secondary transition duration-150 shadow-md">
-                            Enviar Mensaje
+                            Abrir WhatsApp y Enviar Consulta
                         </button>
                     </div>
                     <p id="form-status" class="text-center mt-4 text-sm text-gray-500 hidden"></p>
@@ -176,6 +179,9 @@
 
     <!-- JavaScript para la lógica de Combos, Platos y WhatsApp -->
     <script>
+        // Número de WhatsApp de destino
+        const WHATSAPP_CONTACT_NUMBER = '543517863863';
+
         // Datos de los combos semanales (Solo combos de 5, 6, 8, 10 y 20 viandas)
         const combos = [
             { 
@@ -246,7 +252,6 @@
                 comboCard.className = cardClasses;
                 
                 // URL de la imagen placeholder
-                // Se usa un color de placeholder en rojo/coral
                 const imageUrl = `https://placehold.co/${combo.imagePlaceholder}`;
                 
                 let priceDisplay;
@@ -313,13 +318,9 @@
             });
         }
 
-        // Función para manejar el pedido por WhatsApp
+        // Función para manejar el pedido de COMBO por WhatsApp
         function handleWhatsAppOrder(comboTitle) {
-            // Número de teléfono actualizado
-            const phoneNumber = '543517863863'; 
-            
-            // Mensaje más directo
-            const message = `¡Hola, quiero pedir! Elegí el combo: *${comboTitle}*. 
+            const message = `¡Hola, quiero hacer un pedido! Elegí el combo: *${comboTitle}*. 
             
 Mi pedido de platos es el siguiente (por favor, reemplaza esta línea con la lista de tus viandas. Puedes mezclar hasta 12 platos):
 - [Vianda 1]
@@ -330,29 +331,43 @@ Mi pedido de platos es el siguiente (por favor, reemplaza esta línea con la lis
 ¿Cuál es el siguiente paso para confirmar mi envío?`;
             
             const encodedMessage = encodeURIComponent(message);
-            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            const whatsappUrl = `https://wa.me/${WHATSAPP_CONTACT_NUMBER}?text=${encodedMessage}`;
             
-            // Abrir WhatsApp en una nueva pestaña (o misma pestaña en móvil)
             window.open(whatsappUrl, '_blank');
         }
         
-        // Manejo del Formulario de Contacto (Simulado)
+        // Manejo del Formulario de Contacto (AHORA ENVÍA A WHATSAPP)
         document.getElementById('contact-form').addEventListener('submit', function(event) {
             event.preventDefault();
             const formStatus = document.getElementById('form-status');
             const name = document.getElementById('name').value;
-            const whatsapp = document.getElementById('whatsapp').value; // Obtener el número de WhatsApp
-            
-            // Simulación de envío
-            setTimeout(() => {
-                // Mensaje de éxito actualizado, incluyendo el número de WhatsApp
-                formStatus.textContent = `¡Gracias por tu mensaje, ${name}! Registramos tu WhatsApp (${whatsapp}) para futuras novedades. Te responderemos a la brevedad.`;
-                formStatus.classList.remove('hidden', 'text-gray-500');
-                formStatus.classList.add('text-primary', 'font-semibold');
-                this.reset(); // Limpiar el formulario
-            }, 500);
+            const whatsapp = document.getElementById('whatsapp').value; 
+            const message = document.getElementById('message').value;
 
-            console.log("Formulario de contacto enviado (Simulado)");
+            // 1. Ocultar mensaje de estado previo
+            formStatus.classList.add('hidden');
+
+            // 2. Crear mensaje de WhatsApp con los datos
+            const whatsappMessage = `*Nueva Consulta desde la Web:*
+Nombre: ${name}
+WhatsApp: ${whatsapp}
+Mensaje: ${message}
+
+_Por favor, agrégalo a la lista de difusión para recibir el menú semanal._`;
+
+            const encodedMessage = encodeURIComponent(whatsappMessage);
+            const whatsappUrl = `https://wa.me/${WHATSAPP_CONTACT_NUMBER}?text=${encodedMessage}`;
+
+            // 3. Abrir WhatsApp (y simular que el envío está listo, aunque el usuario debe presionar "Enviar" en WhatsApp)
+            window.open(whatsappUrl, '_blank');
+            
+            // 4. Mostrar mensaje de confirmación
+            formStatus.textContent = `¡Todo listo! Se abrirá WhatsApp para enviar tu consulta a ${name}.`;
+            formStatus.classList.remove('hidden', 'text-gray-500', 'text-primary');
+            formStatus.classList.add('text-green-600', 'font-semibold');
+            
+            // Opcional: Limpiar solo el campo de mensaje para que el usuario pueda enviar otra consulta
+            document.getElementById('message').value = '';
         });
 
         // Inicializar la renderización de combos y platos al cargar la página
