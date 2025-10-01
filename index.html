@@ -22,18 +22,61 @@
         }
         .text-primary { color: var(--color-primary); }
         .bg-primary { background-color: var(--color-primary); }
+        .bg-secondary { background-color: var(--color-secondary); }
         .bg-accent { background-color: var(--color-accent); }
         .hover\:bg-secondary:hover { background-color: var(--color-secondary); }
-        .text-shadow {
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        /* Sombra de texto fuerte para legibilidad sobre imágenes */
+        .text-shadow-lg {
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7), 0 0 5px rgba(0, 0, 0, 0.4);
         }
-        /* Estilo para asegurar que el logo se vea bien en el nav */
-        .logo-container {
-            height: 40px; /* Altura fija para el contenedor del logo */
-        }
-        .logo-img {
-            height: 100%;
+        /* Estilo para asegurar que el logo se vea bien */
+        .logo-img-hero {
+            height: 120px; /* Tamaño más grande para el logo en el hero */
             width: auto;
+            margin: 0 auto 20px; /* Centrado y con margen inferior */
+        }
+        /* Ocultar las flechas nativas del input[type="number"] en todos los navegadores */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        /* Estilo para el input de contador, centrado y sin bordes */
+        .counter-input {
+            width: 40px;
+            text-align: center;
+            border: none;
+            outline: none;
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 700; /* font-bold */
+            background-color: transparent;
+            -moz-appearance: textfield; /* Para Firefox */
+        }
+        
+        /* ------------------------------------------------------------------- */
+        /* NUEVO ESTILO: Fondo con la imagen de las viandas */
+        /* ------------------------------------------------------------------- */
+        .bg-viandas-pattern {
+            /* Asegúrate de que el nombre del archivo sea exactamente 'MUCHAS VIANDAS 03.jpg' */
+            background-image: url('MUCHAS VIANDAS 03.jpg'); 
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        /* Overlay para mejorar la legibilidad del texto blanco */
+        .bg-viandas-pattern::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.55); /* Capa oscura semitransparente */
+            z-index: 1;
+        }
+        .content-z-2 > * {
+            position: relative;
+            z-index: 2;
         }
     </style>
 </head>
@@ -42,19 +85,21 @@
     <!-- Header / Navbar -->
     <header class="bg-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <!-- Logo para Desktop/Tablet. Nota: La imagen 'LOGO SORPRENDEME COLOR.png' debe estar en la misma carpeta que el index.html para que funcione en un servidor real. -->
-            <div class="hidden md:block logo-container">
-                <img src="LOGO SORPRENDEME COLOR.png" alt="Logo Sorpréndeme Viandas" class="logo-img">
-            </div>
             
-            <!-- Título para Mobile -->
+            <!-- Logo y Título solo para Mobile -->
             <h1 class="text-3xl font-extrabold text-primary tracking-tight md:hidden">
                 Sorpréndeme Viandas
             </h1>
+            
+            <!-- Título para Desktop/Tablet (ahora es el único elemento visible si no hay logo) -->
+            <div class="hidden md:block">
+                 <h1 class="text-3xl font-extrabold text-primary tracking-tight">Sorpréndeme Viandas</h1>
+            </div>
 
             <nav class="hidden md:flex space-x-6 text-gray-600 items-center">
+                <a href="#ventajas" class="hover:text-primary font-medium transition duration-150">Ventajas</a>
                 <a href="#combos" class="hover:text-primary font-medium transition duration-150">Combos</a>
-                <a href="#platos" class="hover:text-primary font-medium transition duration-150">Platos de la Semana</a>
+                <a href="#platos" class="hover:text-primary font-medium transition duration-150">Platos</a>
                 <a href="#contacto" class="hover:text-primary font-medium transition duration-150">Contacto</a>
                 <!-- Botón de WhatsApp con color de acento amarillo -->
                 <a href="https://wa.me/543517863863" target="_blank" class="bg-accent text-gray-900 px-4 py-2 rounded-lg hover:bg-yellow-400 transition duration-150 font-semibold shadow-md flex items-center">
@@ -69,6 +114,7 @@
         </div>
         <!-- Mobile Menu Dropdown -->
         <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pt-2 pb-4 space-y-1">
+            <a href="#ventajas" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50">Ventajas</a>
             <a href="#combos" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50">Combos</a>
             <a href="#platos" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50">Platos de la Semana</a>
             <a href="#contacto" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50">Contacto</a>
@@ -82,8 +128,11 @@
     <!-- Hero Section -->
     <section class="bg-[--color-background-hero] py-16 sm:py-24 text-center">
         <div class="max-w-4xl mx-auto px-4">
+            <!-- Logo. Usa LOGO SORPRENDEME COLOR.png como se subió previamente -->
+            <img src="LOGO SORPRENDEME COLOR.png" alt="Logo Sorpréndeme Viandas" class="logo-img-hero" onerror="this.onerror=null;this.src='https://placehold.co/120x120/E64E4E/ffffff?text=Logo';">
+            
             <!-- Texto principal con el color primario -->
-            <h2 class="text-4xl sm:text-6xl font-extrabold text-gray-800 mb-4 leading-tight text-shadow">
+            <h2 class="text-4xl sm:text-6xl font-extrabold text-gray-800 mb-4 leading-tight text-shadow-lg">
                 <span class="text-primary">Sorpréndeme Viandas:</span> Tu Freezer, Tu Restaurante.
             </h2>
             <p class="text-lg sm:text-xl text-gray-700 mb-8">
@@ -96,12 +145,68 @@
         </div>
     </section>
 
+    <!-- UPDATED: Advantages and Features Section with Background Image -->
+    <section id="ventajas" class="py-16 sm:py-24 bg-viandas-pattern">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 content-z-2">
+            <!-- Título y Subtítulo en blanco con sombra -->
+            <div class="text-center mb-12 text-white text-shadow-lg">
+                <h3 class="text-4xl font-extrabold mb-2">Por qué elegir Sorpréndeme Viandas</h3>
+                <p class="text-xl">Comodidad, sabor y calidad en tu freezer, pensado para tu rutina.</p>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <!-- Feature 1: Envios Gratis -->
+                <div class="bg-white/95 p-6 rounded-xl shadow-lg border-t-4 border-primary hover:shadow-2xl transition duration-300 transform hover:scale-[1.02] text-center">
+                    <div class="text-5xl text-primary mx-auto mb-4 w-16 h-16 flex items-center justify-center rounded-full bg-primary/10">
+                        <!-- Icono de Camión de Entrega -->
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7a3 3 0 003 3z"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-2">Envío a Domicilio GRATIS</h4>
+                    <p class="text-gray-600">Envíos sin costo adicional en toda la **Ciudad de Córdoba**. ¡Tu vianda llega a tu puerta!</p>
+                </div>
+
+                <!-- Feature 2: Apto Microondas -->
+                <div class="bg-white/95 p-6 rounded-xl shadow-lg border-t-4 border-primary hover:shadow-2xl transition duration-300 transform hover:scale-[1.02] text-center">
+                    <div class="text-5xl text-primary mx-auto mb-4 w-16 h-16 flex items-center justify-center rounded-full bg-primary/10">
+                        <!-- Icono de Microondas / Comida Caliente -->
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.657 0 3 .895 3 2s-1.343 2-3 2h-1a3 3 0 00-3 3v1a2 2 0 002 2h6m-1-4l4 4m-4-4l4-4M3 12h1m16 0h1M5.9 5.9l.7.7m11.5-.7l-.7.7m-8.1 12.1h8a1 1 0 001-1v-8a1 1 0 00-1-1h-8a1 1 0 00-1 1v8a1 1 0 001 1z"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-2">Bandejas Individuales</h4>
+                    <p class="text-gray-600">Viandas porcionadas en bandejas individuales **aptas para microondas**. Calentás y listo.</p>
+                </div>
+
+                <!-- Feature 3: Deadline y Entrega -->
+                <div class="bg-white/95 p-6 rounded-xl shadow-lg border-t-4 border-primary hover:shadow-2xl transition duration-300 transform hover:scale-[1.02] text-center">
+                    <div class="text-5xl text-primary mx-auto mb-4 w-16 h-16 flex items-center justify-center rounded-full bg-primary/10">
+                        <!-- Icono de Calendario y Reloj -->
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-4 17h6M7 15h10M7 11h10M7 7h10M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-2">Pedido y Entrega Semanal</h4>
+                    <p class="text-gray-600">Pedís hasta el **Martes** y recibís tus viandas el **Jueves**. ¡Planifica tu semana!</p>
+                </div>
+                
+                <!-- Feature 4: Actualización del Menú -->
+                <div class="bg-white/95 p-6 rounded-xl shadow-lg border-t-4 border-primary hover:shadow-2xl transition duration-300 transform hover:scale-[1.02] text-center">
+                    <div class="text-5xl text-primary mx-auto mb-4 w-16 h-16 flex items-center justify-center rounded-full bg-primary/10">
+                        <!-- Icono de Refrescar / Listado -->
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 15m7.356-7.356a1 1 0 10-1.414-1.414L10 8.586V4h4m0 4l-1.414-1.414A1 1 0 0010 8.586v4l-1.414-1.414m-1 1l-1.414-1.414M3 12h.01M21 12h.01M9 3v.01M15 3v.01M9 21v.01M15 21v.01"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-2">Menú Siempre Fresco</h4>
+                    <p class="text-gray-600">Nuestra carta de platos se actualiza **todos los Viernes**. ¡Siempre hay algo nuevo para probar!</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
     <!-- Menu Selection Section - Combos -->
     <section id="combos" class="py-16 sm:pb-12 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h3 class="text-4xl font-extrabold text-gray-800 mb-2">Paso 1: Elige tu Combo</h3>
-                <p class="text-xl text-gray-600">Combina la cantidad de viandas con tus 12 platos favoritos (visibles abajo).</p>
+                <p class="text-xl text-gray-600">Combina la cantidad de viandas con tus 12 platos favoritos (visibles en el paso 2).</p>
             </div>
 
             <div id="combo-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -113,13 +218,28 @@
     <!-- Menu Selection Section - Platos Disponibles -->
     <section id="platos" class="py-12 sm:pt-16 bg-gray-50 border-t border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h3 class="text-4xl font-extrabold text-gray-800 mb-2">Paso 2: 12 Platos a Elegir</h3>
-                <p class="text-xl text-gray-600">Puedes mezclar y combinar los siguientes platos en cualquier combo:</p>
+            <div class="text-center mb-8">
+                <h3 class="text-4xl font-extrabold text-gray-800 mb-2">Paso 2: Arma tu Pedido</h3>
+                <p class="text-xl text-gray-600">Selecciona la cantidad de cada plato hasta completar el combo elegido.</p>
+            </div>
+
+            <!-- Display de Selección de Combo y Contador (Nuevo) -->
+            <div id="combo-selection-display" class="bg-primary text-white p-4 sm:p-6 rounded-xl shadow-xl mb-10 hidden transition-opacity duration-300 ease-in-out">
+                <h4 class="text-2xl sm:text-3xl font-bold mb-2">Combo Seleccionado: <span id="selected-combo-title" class="font-extrabold text-accent">--</span></h4>
+                <p class="text-xl font-semibold">Viandas requeridas para este pedido inicial: <span id="viandas-counter" class="text-4xl font-extrabold text-accent">0</span> / <span id="viandas-required" class="text-4xl font-extrabold text-accent">0</span></p>
+                <p id="counter-message" class="mt-2 text-sm sm:text-base"></p>
             </div>
             
-            <div id="platos-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- Platos will be injected here by JavaScript -->
+            <div id="platos-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+                <!-- Platos con inputs de cantidad will be injected here by JavaScript -->
+            </div>
+
+            <!-- Botón de Envío Final de WhatsApp (Nuevo) -->
+            <div class="text-center mt-12">
+                 <button id="final-whatsapp-order-button" onclick="showOrderModal()" disabled 
+                        class="w-full md:w-2/3 lg:w-1/2 bg-secondary text-white py-4 rounded-xl font-bold text-xl shadow-2xl transition duration-300 opacity-50 cursor-not-allowed hover:bg-secondary">
+                    Selecciona un Combo primero
+                </button>
             </div>
         </div>
     </section>
@@ -163,11 +283,38 @@
         </div>
     </section>
 
+    <!-- Sección de Redes Sociales (Simplificada) -->
+    <section id="redes" class="py-16 sm:py-24 bg-primary text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h3 class="text-4xl font-extrabold mb-6">¡Síguenos en Redes!</h3>
+            <p class="text-xl mb-10 opacity-90">Entérate de nuestros nuevos platos, combos especiales y promociones semanales en nuestro Instagram.</p>
+
+            <!-- Botones de Redes Sociales -->
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-8 mb-12">
+                <!-- Instagram -->
+                <a href="https://instagram.com/sorprendeme.viandas" target="_blank" class="flex items-center space-x-3 bg-accent text-gray-900 px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:bg-yellow-400 transition duration-300 transform hover:scale-105">
+                    <!-- Icono de Instagram -->
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M16 8a6 6 0 016 6v7a1 1 0 01-1 1H3a1 1 0 01-1-1v-7a6 6 0 016-6zM8 10a4 4 0 100 8 4 4 0 000-8zM17 6a1 1 0 100 2 1 1 0 000-2z"></path></svg>
+                    <span>Seguir en Instagram</span>
+                </a>
+
+                <!-- Facebook -->
+                <a href="https://facebook.com/sorprendeme.viandas" target="_blank" class="flex items-center space-x-3 bg-white text-gray-900 px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:bg-gray-100 transition duration-300 transform hover:scale-105">
+                    <!-- Icono de Facebook -->
+                    <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.99 3.65 9.15 8.44 9.87v-7.18H7.55V12h2.89V9.74c0-2.88 1.77-4.47 4.34-4.47 1.23 0 2.28.1 2.59.15v2.84h-1.7c-1.4 0-1.68.66-1.68 1.64V12h3.19l-.52 3.19h-2.67v7.18C18.35 21.15 22 16.99 22 12z"/></svg>
+                    <span>Ir a Facebook</span>
+                </a>
+            </div>
+            
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p>&copy; 2024 Sorpréndeme Viandas. Todos los derechos reservados.</p>
             <div class="mt-4 space-x-4">
+                <a href="#ventajas" class="text-gray-400 hover:text-primary transition duration-150">Ventajas</a>
                 <a href="#combos" class="text-gray-400 hover:text-primary transition duration-150">Combos</a>
                 <a href="#platos" class="text-gray-400 hover:text-primary transition duration-150">Platos</a>
                 <a href="#contacto" class="text-gray-400 hover:text-primary transition duration-150">Contacto</a>
@@ -177,42 +324,96 @@
         </div>
     </footer>
 
+    <!-- Modal for Finalizing Order (Address and Payment) -->
+    <div id="order-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 sm:p-8 transform transition-all duration-300">
+            <h4 class="text-3xl font-extrabold text-primary mb-4 text-center">¡Último Paso: Confirma tu Pedido!</h4>
+            <p class="text-gray-700 mb-6 text-center text-lg font-semibold">Te pedimos tu dirección de entrega y te brindamos los datos para la transferencia.</p>
+
+            <!-- Input de Dirección -->
+            <div class="mb-6">
+                <label for="delivery-address" class="block text-lg font-bold text-gray-800 mb-2">
+                    <span class="text-primary">1.</span> Dirección de Entrega Completa:
+                </label>
+                <input type="text" id="delivery-address" required 
+                       placeholder="Calle, número, piso/departamento, barrio/localidad"
+                       class="w-full px-4 py-3 border-2 border-primary rounded-lg focus:ring-primary focus:border-primary text-gray-900 transition duration-150 shadow-md">
+            </div>
+
+            <!-- Detalles de Pago -->
+            <div class="bg-gray-100 p-4 rounded-lg border border-gray-200 mb-6">
+                <label class="block text-lg font-bold text-gray-800 mb-3">
+                    <span class="text-primary">2.</span> Datos para Transferencia Bancaria:
+                </label>
+                <!-- Detalles de pago inyectados por JS -->
+                <ul id="payment-details-list" class="space-y-2 text-sm text-gray-700">
+                    <!-- JS will inject payment details here -->
+                </ul>
+                <p class="mt-4 text-sm text-gray-600 font-semibold">Una vez enviado el pedido por WhatsApp, envía el comprobante de pago.</p>
+            </div>
+            
+            <!-- Botón de Confirmación Final -->
+            <button id="modal-confirm-button" onclick="confirmOrderAndSendWhatsApp()" disabled
+                    class="w-full bg-primary text-white py-3 rounded-xl font-bold text-lg hover:bg-secondary transition duration-300 opacity-50 cursor-not-allowed shadow-xl">
+                Ingresa la Dirección para Confirmar y Enviar a WhatsApp
+            </button>
+            <button onclick="document.getElementById('order-modal').classList.add('hidden')"
+                    class="w-full mt-3 text-gray-600 py-2 rounded-xl text-sm hover:text-primary transition duration-300">
+                Cancelar y Volver al Menú
+            </button>
+        </div>
+    </div>
+
     <!-- JavaScript para la lógica de Combos, Platos y WhatsApp -->
     <script>
         // Número de WhatsApp de destino
         const WHATSAPP_CONTACT_NUMBER = '543517863863';
+        
+        // --- ESTADO GLOBAL DE LA APLICACIÓN ---
+        let selectedCombo = null;
+        let dishQuantities = []; // Almacena { id, name, quantity } para cada plato.
+        
+        // Datos bancarios para transferencia
+        const BANK_DETAILS = {
+            bank: "Banco Santander",
+            accountType: "Caja de Ahorro en Pesos",
+            cbu: "0140356103400780213031", // Ejemplo
+            alias: "SORPRENDEME.VIANDAS",
+            holder: "Sorpréndeme Viandas S.R.L.",
+        };
 
-        // Datos de los combos semanales (Solo combos de 5, 6, 8, 10 y 20 viandas)
+        // Datos de los combos
+        // Se añade la propiedad 'initialMeals' que define cuántas viandas debe seleccionar el usuario AHORA.
         const combos = [
             { 
-                id: 1, meals: 5, title: "Combo 5 Viandas Laboral", 
+                id: 1, meals: 5, initialMeals: 5, title: "Combo 5 Viandas Laboral", 
                 description: "Perfecto para cubrir tu semana de trabajo de Lunes a Viernes. ¡La opción más elegida!", 
-                price: "$40.000", 
+                price: "40.000", 
                 imagePlaceholder: "400x200/22C55E/ffffff?text=5+VIANDAS" 
             },
             { 
-                id: 2, meals: 6, title: "Combo 6 Viandas Mix", 
+                id: 2, meals: 6, initialMeals: 6, title: "Combo 6 Viandas Mix", 
                 description: "Una opción versátil para pareja o si incluyes un fin de semana. 6 platos a tu elección.", 
-                price: "$46.000", 
+                price: "46.000", 
                 imagePlaceholder: "400x200/0EA5E9/ffffff?text=6+VIANDAS" 
             },
             { 
-                id: 3, meals: 8, title: "Combo 8 Viandas Ampliado", 
+                id: 3, meals: 8, initialMeals: 8, title: "Combo 8 Viandas Ampliado", 
                 description: "Ideal para dos personas o para una semana y media de almuerzos individuales. ¡Mayor ahorro!", 
-                price: "$62.000", 
+                price: "62.000", 
                 imagePlaceholder: "400x200/D946EF/ffffff?text=8+VIANDAS" 
             },
             { 
-                id: 4, meals: 10, title: "Combo 10 Viandas Estándar", 
+                id: 4, meals: 10, initialMeals: 10, title: "Combo 10 Viandas Estándar", 
                 description: "El pack para dos semanas de almuerzos. Elige 10 platos de la carta semanal.", 
-                price: "$75.000", 
+                price: "75.000", 
                 imagePlaceholder: "400x200/F97316/ffffff?text=10+VIANDAS" 
             },
             { 
-                id: 5, meals: 20, title: "¡PROMO! 20 Viandas Mensuales", 
-                description: "El mejor precio. Recibes 5 viandas por semana durante 4 semanas. ¡El máximo ahorro!", 
-                price: "$145.000", 
-                unitPrice: "$7.250", 
+                id: 5, meals: 20, initialMeals: 5, title: "¡PROMO! 20 Viandas Mensuales", 
+                description: "El mejor precio. Recibes 5 viandas por semana durante 4 semanas. ¡El máximo ahorro! *Solo seleccionas 5 platos ahora, el resto se coordina semanalmente.*", 
+                price: "145.000", 
+                unitPrice: "7.250", 
                 imagePlaceholder: "400x200/EF4444/ffffff?text=20+VIANDAS+PROMO" 
             }
         ];
@@ -220,20 +421,29 @@
         // Datos de los 12 platos disponibles 
         const platosDisponibles = [
             // Opciones NO Vegetarianas (Icono 🥓)
-            { name: "1. Albóndigas en salsa con arroz", icon: "🥓" },
-            { name: "2. Sorrentinos de pollo", icon: "🥓" },
-            { name: "3. Wok de cerdo y vegetales", icon: "🥓" },
-            { name: "4. Milanesa de pescado", icon: "🥓" },
-            { name: "5. Roulette de pollo", icon: "🥓" },
-            { name: "6. Menú Sorpréndeme (Carne/Pescado)", icon: "🥓" },
+            { id: 0, name: "Albóndigas en salsa con arroz", icon: "🥓", imagePlaceholder: "400x200/F0F0F0/000000?text=Vianda+Carnes" },
+            { id: 1, name: "Sorrentinos de pollo", icon: "🥓", imagePlaceholder: "400x200/F0F0F0/000000?text=Vianda+Carnes" },
+            { id: 2, name: "Wok de cerdo y vegetales", icon: "🥓", imagePlaceholder: "400x200/F0F0F0/000000?text=Vianda+Carnes" },
+            { id: 3, name: "Milanesa de pescado", icon: "🥓", imagePlaceholder: "400x200/F0F0F0/000000?text=Vianda+Carnes" },
+            { id: 4, name: "Roulette de pollo", icon: "🥓", imagePlaceholder: "400x200/F0F0F0/000000?text=Vianda+Carnes" },
+            { id: 5, name: "Menú Sorpréndeme (Carne/Pescado)", icon: "🥓", imagePlaceholder: "400x200/F0F0F0/000000?text=Vianda+Carnes" },
             // Opciones Vegetarianas (Icono 🌱)
-            { name: "7. Sorrentinos de espinaca", icon: "🌱" },
-            { name: "8. Hamburguesa de garbanzos", icon: "🌱" },
-            { name: "9. Torre de vegetales gratinados", icon: "🌱" },
-            { name: "10. Tortilla de vegetales", icon: "🌱" },
-            { name: "11. Omelette caprese", icon: "🌱" },
-            { name: "12. Menú Sorpréndeme (Vegetariano)", icon: "🌱" }
+            { id: 6, name: "Sorrentinos de espinaca", icon: "🌱", imagePlaceholder: "400x200/F0F0F0/000000?text=Vianda+Veggie" },
+            { id: 7, name: "Hamburguesa de garbanzos", icon: "🌱", imagePlaceholder: "400x200/F0F0F0/000000?text=Vianda+Veggie" },
+            { id: 8, name: "Torre de vegetales gratinados", icon: "🌱", imagePlaceholder: "400x200/F0F0F0/000000?text=Vianda+Veggie" },
+            { id: 9, name: "Tortilla de vegetales", icon: "🌱", imagePlaceholder: "400x200/F0F0F0/000000?text=Vianda+Veggie" },
+            { id: 10, name: "Omelette caprese", icon: "🌱", imagePlaceholder: "400x200/F0F0F0/000000?text=Vianda+Veggie" },
+            { id: 11, name: "Menú Sorpréndeme (Vegetariano)", icon: "🌱", imagePlaceholder: "400x200/F0F0F0/000000?text=Vianda+Veggie" }
         ];
+
+        // Inicializa el estado de las cantidades de platos
+        function initializeDishQuantities() {
+            dishQuantities = platosDisponibles.map(plato => ({ 
+                id: plato.id, 
+                name: plato.name, 
+                quantity: 0 
+            }));
+        }
 
         // Función para renderizar los combos en la cuadrícula
         function renderCombos() {
@@ -244,31 +454,29 @@
 
             combos.forEach(combo => {
                 const comboCard = document.createElement('div');
-                // Estilo especial para la promo mensual, usando la nueva primary color
                 const cardClasses = combo.meals === 20 ? 
                     'bg-white rounded-xl shadow-2xl hover:shadow-primary transition duration-300 overflow-hidden border-4 border-primary transform hover:scale-105 relative' :
                     'bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 overflow-hidden border border-gray-100 transform hover:-translate-y-1';
                 
                 comboCard.className = cardClasses;
                 
-                // URL de la imagen placeholder
+                // Usando PLACEHOLDER IMAGE URL
                 const imageUrl = `https://placehold.co/${combo.imagePlaceholder}`;
                 
                 let priceDisplay;
                 if (combo.meals === 20) {
-                    // Display especial para la Promo Mensual
                     priceDisplay = `
                         <div class="text-4xl font-extrabold text-primary mb-1 text-center leading-none">
-                            ${combo.unitPrice}
+                            $${combo.unitPrice}
                             <span class="block text-xl font-bold text-gray-700 mt-1">por porción</span>
                         </div>
-                        <span class="block text-sm font-medium text-gray-500 text-center">Total: ${combo.price}</span>
+                        <span class="block text-sm font-medium text-gray-500 text-center">Total: $${combo.price}</span>
+                        <p class="text-xs text-center text-primary font-bold mt-2">¡Solo debes elegir 5 platos ahora!</p>
                     `;
                 } else {
-                    // Display estándar para otros combos
                     priceDisplay = `
                         <div class="text-4xl font-extrabold text-primary mb-4 text-center">
-                            ${combo.price}
+                            $${combo.price}
                             <span class="block text-sm font-medium text-gray-500">Precio Final</span>
                         </div>
                     `;
@@ -276,7 +484,6 @@
 
                 comboCard.innerHTML = `
                     <div>
-                        <!-- Etiqueta de PROMO si es el combo de 20 (usa color de acento amarillo) -->
                         ${combo.meals === 20 ? '<span class="absolute top-2 right-2 bg-accent text-gray-900 text-sm font-extrabold px-3 py-1 rounded-full shadow-lg transform rotate-3">¡Más Elegido!</span>' : ''}
                         
                         <!-- Imagen Placeholder -->
@@ -288,19 +495,43 @@
                         
                         ${priceDisplay}
                         
-                        <!-- Botón del combo usa color de acento amarillo -->
-                        <button onclick="handleWhatsAppOrder('${combo.title}')" 
+                        <!-- BOTÓN ENLAZADO A LA FUNCIÓN selectCombo -->
+                        <button onclick="selectCombo(${combo.id})" 
                                 class="w-full bg-accent text-gray-900 py-3 rounded-lg font-bold shadow-md hover:opacity-90 transition duration-150 flex items-center justify-center mt-4">
                             <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.43 2.92A1.82 1.82 0 0015.82 1L4.85 1A1.85 1.85 0 003 2.85V17.15A1.85 1.85 0 004.85 19L15.82 19A1.82 1.82 0 0017.43 17.08V2.92zM8.9 14.12l-1.63-1.63A.8.8 0 017.27 11.8L12.5 6.56a.8.8 0 011.13 0l.9.9a.8.8 0 010 1.13L9.83 14.12a.8.8 0 01-1.13 0z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
-                            Confirmar Pedido
+                            Seleccionar y Armar Menú
                         </button>
                     </div>
                 `;
-                comboGrid.appendChild(comboCard);
+                comboGrid.appendChild(comboCard); 
             });
         }
         
-        // Función para renderizar los platos disponibles
+        // Función para manejar la selección de combo (Paso 1)
+        function selectCombo(comboId) {
+            const combo = combos.find(c => c.id === comboId);
+            if (!combo) return;
+
+            selectedCombo = combo; // Almacenar el objeto combo completo
+            
+            // 1. Reiniciar cantidades y re-renderizar platos para que los inputs estén a 0
+            initializeDishQuantities();
+            renderPlatos(); // <-- Llamada crucial
+            
+            // 2. Actualizar el banner de selección
+            document.getElementById('selected-combo-title').textContent = combo.title;
+            // Usamos initialMeals como el valor requerido para la selección actual
+            document.getElementById('viandas-required').textContent = combo.initialMeals; 
+            document.getElementById('combo-selection-display').classList.remove('hidden');
+            
+            // 3. Desplazarse y actualizar el contador
+            document.getElementById('platos').scrollIntoView({ behavior: 'smooth' });
+            updateTotalCount();
+        }
+
+        // -------------------------------------------------------------------
+        // Función MODIFICADA: Renderiza la lista de platos con botones de +/-
+        // -------------------------------------------------------------------
         function renderPlatos() {
             const platosList = document.getElementById('platos-list');
             if (!platosList) return;
@@ -308,35 +539,230 @@
             platosList.innerHTML = ''; // Limpiar contenido previo
 
             platosDisponibles.forEach(plato => {
-                const platoItem = document.createElement('div');
-                platoItem.className = 'bg-white p-4 rounded-lg shadow-md border border-gray-100 hover:shadow-lg transition duration-200 flex items-center space-x-3';
-                platoItem.innerHTML = `
-                    <span class="text-2xl">${plato.icon}</span>
-                    <p class="text-base font-semibold text-gray-800">${plato.name}</p>
+                // Encontrar la cantidad actual
+                const currentQuantity = dishQuantities.find(d => d.id === plato.id)?.quantity || 0;
+
+                const card = document.createElement('div');
+                // Estilo para destacar la tarjeta al pasar el mouse
+                const borderColor = plato.icon === '🌱' ? 'border-green-500' : 'border-red-500';
+
+                card.className = `bg-white rounded-xl shadow-lg border-t-4 ${borderColor} hover:shadow-xl transition duration-300`;
+
+                card.innerHTML = `
+                    <div class="p-4 text-center">
+                        <p class="text-3xl mb-2">${plato.icon}</p>
+                        <h5 class="text-base sm:text-lg font-semibold text-gray-800 mb-2">${plato.name}</h5>
+                        <div class="flex items-center justify-center space-x-2 mt-3 p-1 border-2 border-gray-300 rounded-lg">
+                            
+                            <!-- Botón de decremento (-) -->
+                            <button onclick="changeDishQuantity(${plato.id}, -1)" 
+                                    class="text-primary hover:text-secondary p-2 transition duration-150 rounded-full text-2xl font-bold touch-manipulation">
+                                -
+                            </button>
+                            
+                            <!-- Input de cantidad (solo display) -->
+                            <input type="number" id="dish-${plato.id}" min="0" value="${currentQuantity}" readonly
+                                   class="counter-input" data-dish-id="${plato.id}">
+                            
+                            <!-- Botón de incremento (+) -->
+                            <button onclick="changeDishQuantity(${plato.id}, 1)" 
+                                    class="text-primary hover:text-secondary p-2 transition duration-150 rounded-full text-2xl font-bold touch-manipulation">
+                                +
+                            </button>
+                        </div>
+                    </div>
                 `;
-                platosList.appendChild(platoItem);
+                platosList.appendChild(card);
             });
         }
+        
+        // Función para actualizar la cantidad de un plato específico
+        function changeDishQuantity(dishId, change) {
+            const dish = dishQuantities.find(d => d.id === dishId);
+            if (!dish) return;
 
-        // Función para manejar el pedido de COMBO por WhatsApp
-        function handleWhatsAppOrder(comboTitle) {
-            const message = `¡Hola, quiero hacer un pedido! Elegí el combo: *${comboTitle}*. 
+            let newQuantity = dish.quantity + change;
             
-Mi pedido de platos es el siguiente (por favor, reemplaza esta línea con la lista de tus viandas. Puedes mezclar hasta 12 platos):
-- [Vianda 1]
-- [Vianda 2]
-- [Vianda 3]
-- [Y así sucesivamente hasta completar tu combo]
+            // Asegura que la cantidad no sea negativa
+            if (newQuantity < 0) {
+                newQuantity = 0;
+            }
+
+            dish.quantity = newQuantity;
             
-¿Cuál es el siguiente paso para confirmar mi envío?`;
+            // Actualizar el valor en el DOM inmediatamente
+            const inputElement = document.getElementById(`dish-${dishId}`);
+            if (inputElement) {
+                inputElement.value = newQuantity;
+            }
             
+            updateTotalCount();
+        }
+        
+        // Función para recalcular el total de viandas y habilitar el botón final
+        function updateTotalCount() {
+            const totalSelected = dishQuantities.reduce((sum, dish) => sum + dish.quantity, 0);
+            // La cantidad requerida AHORA es initialMeals
+            const requiredMeals = selectedCombo ? selectedCombo.initialMeals : 0;
+            
+            const counterSpan = document.getElementById('viandas-counter');
+            const requiredSpan = document.getElementById('viandas-required');
+            const whatsappButton = document.getElementById('final-whatsapp-order-button');
+            const counterMessage = document.getElementById('counter-message');
+            
+            counterSpan.textContent = totalSelected;
+            requiredSpan.textContent = requiredMeals;
+            
+            if (selectedCombo) {
+                const diff = requiredMeals - totalSelected;
+                let buttonText = '';
+                let counterMsg = '';
+                let isComplete = false;
+
+                if (totalSelected === requiredMeals) {
+                    // Pedido Completo
+                    isComplete = true;
+                    // Mensaje especial para combos que tienen más platos totales que iniciales (ej: 20 viandas)
+                    if (selectedCombo.meals > selectedCombo.initialMeals) {
+                         buttonText = `¡Menú Semanal Completo! Ir a Confirmación de Pedido (${totalSelected} Platos ahora)`;
+                         counterMsg = `¡Excelente! Has seleccionado las ${selectedCombo.initialMeals} viandas iniciales. El resto se coordina semanalmente.`;
+                    } else {
+                         buttonText = `¡Pedido Completo! Ir a Confirmación y Pago (${totalSelected} Platos)`;
+                         counterMsg = '¡Excelente! Has seleccionado la cantidad exacta de viandas.';
+                    }
+                } else if (totalSelected > requiredMeals) {
+                    // Exceso de platos
+                    buttonText = `¡ATENCIÓN! Te sobran ${Math.abs(diff)} vianda(s). Ajusta la cantidad.`;
+                    counterMsg = `Debes seleccionar ${requiredMeals} viandas para tu pedido inicial. Por favor, disminuye ${Math.abs(diff)} vianda(s).`;
+                } else {
+                    // Faltan platos
+                    buttonText = `Faltan ${diff} vianda(s) para completar tu menú inicial`;
+                    counterMsg = `Te faltan seleccionar ${diff} vianda(s) para completar tu pedido inicial del combo ${selectedCombo.title}.`;
+                }
+
+                // Habilitar / Deshabilitar botón
+                whatsappButton.disabled = !isComplete;
+                if (isComplete) {
+                    whatsappButton.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-secondary', 'text-white');
+                    whatsappButton.classList.add('bg-accent', 'text-gray-900', 'hover:bg-yellow-400');
+                } else {
+                    whatsappButton.classList.remove('bg-accent', 'text-gray-900', 'hover:bg-yellow-400');
+                    whatsappButton.classList.add('opacity-50', 'cursor-not-allowed', 'bg-secondary', 'text-white');
+                }
+                
+                whatsappButton.textContent = buttonText;
+                counterMessage.textContent = counterMsg;
+            } else {
+                 whatsappButton.disabled = true;
+                 whatsappButton.classList.remove('bg-accent', 'text-gray-900', 'hover:bg-yellow-400');
+                 whatsappButton.classList.add('opacity-50', 'cursor-not-allowed', 'bg-secondary', 'text-white');
+                 whatsappButton.textContent = 'Selecciona un Combo primero (Paso 1)';
+            }
+        }
+        
+        // --- LÓGICA DEL MODAL DE CONFIRMACIÓN Y PAGO ---
+        
+        function renderPaymentDetails() {
+            const list = document.getElementById('payment-details-list');
+            list.innerHTML = `
+                <li><span class="font-semibold">Banco:</span> ${BANK_DETAILS.bank}</li>
+                <li><span class="font-semibold">Tipo de Cuenta:</span> ${BANK_DETAILS.accountType}</li>
+                <li><span class="font-semibold">CBU:</span> ${BANK_DETAILS.cbu}</li>
+                <li><span class="font-semibold">Alias:</span> <span class="text-primary font-extrabold">${BANK_DETAILS.alias}</span></li>
+                <li><span class="font-semibold">Titular:</span> ${BANK_DETAILS.holder}</li>
+                <li class="mt-2 text-primary font-bold"><span class="font-semibold">Monto a Transferir:</span> $${selectedCombo.price}</li>
+            `;
+        }
+
+        // Función para mostrar el modal (se llama al finalizar la selección de platos)
+        function showOrderModal() {
+            if (!selectedCombo) return; // Doble chequeo
+            
+            // 1. Mostrar detalles de pago
+            renderPaymentDetails();
+            
+            // 2. Limpiar campo de dirección (opcional) y añadir listener para habilitar botón
+            const addressInput = document.getElementById('delivery-address');
+            addressInput.value = ''; // Limpia el input
+            
+            const confirmButton = document.getElementById('modal-confirm-button');
+            confirmButton.disabled = true; // Empieza deshabilitado
+
+            addressInput.oninput = function() {
+                // Habilita el botón si la dirección tiene al menos 10 caracteres (un chequeo básico)
+                if (this.value.trim().length > 10) {
+                    confirmButton.disabled = false;
+                    confirmButton.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-primary', 'text-white');
+                    confirmButton.classList.add('bg-accent', 'text-gray-900', 'hover:bg-yellow-400');
+                    confirmButton.textContent = 'Confirmar Dirección y Enviar Pedido por WhatsApp';
+                } else {
+                    confirmButton.disabled = true;
+                    confirmButton.classList.remove('bg-accent', 'text-gray-900', 'hover:bg-yellow-400');
+                    confirmButton.classList.add('opacity-50', 'cursor-not-allowed', 'bg-primary', 'text-white');
+                    confirmButton.textContent = 'Ingresa la Dirección para Confirmar y Enviar a WhatsApp';
+                }
+            };
+            
+            // 3. Mostrar modal
+            document.getElementById('order-modal').classList.remove('hidden');
+        }
+
+        // Función FINAL para generar y enviar el pedido por WhatsApp (Paso 3)
+        function confirmOrderAndSendWhatsApp() {
+            const address = document.getElementById('delivery-address').value.trim();
+            
+            if (!selectedCombo || address.length < 10) {
+                // Si por alguna razón falla, ocultamos el modal y alertamos al usuario.
+                document.getElementById('order-modal').classList.add('hidden');
+                document.getElementById('counter-message').textContent = 'ERROR: Por favor, ingresa una dirección completa.';
+                return;
+            }
+
+            // Ocultar modal
+            document.getElementById('order-modal').classList.add('hidden');
+
+            // Generar la lista detallada de platos
+            const selectedDishesText = dishQuantities
+                .filter(dish => dish.quantity > 0)
+                .map(dish => `- ${dish.name}: ${dish.quantity} unidad(es)`)
+                .join('\n');
+            
+            // Mensaje personalizado si el combo total es mayor que la selección inicial (Promo Mensual)
+            let messageHeader = '';
+            if (selectedCombo.meals > selectedCombo.initialMeals) {
+                messageHeader = `Elegí el combo: *${selectedCombo.title}* (${selectedCombo.meals} viandas en total).
+Precio Total: $${selectedCombo.price}
+
+*--- ¡IMPORTANTE! ---*
+*Este es el menú para la primer semana* (${selectedCombo.initialMeals} viandas). Coordinaremos las ${selectedCombo.meals - selectedCombo.initialMeals} viandas restantes semana a semana.`;
+            } else {
+                messageHeader = `Elegí el combo: *${selectedCombo.title}* (${selectedCombo.meals} viandas).
+Precio Final: $${selectedCombo.price}`;
+            }
+            
+            // Mensaje completo de WhatsApp
+            const message = `¡Hola, quiero confirmar mi pedido!
+            
+${messageHeader}
+            
+*Detalle de Platos Seleccionados:*
+${selectedDishesText}
+            
+*Dirección de Entrega:*
+${address}
+            
+*PASO FINAL: Adjunto el comprobante de transferencia al siguiente mensaje.*
+            
+`; // Se añade un salto de línea final para la dirección
+
             const encodedMessage = encodeURIComponent(message);
             const whatsappUrl = `https://wa.me/${WHATSAPP_CONTACT_NUMBER}?text=${encodedMessage}`;
             
+            // Abrir WhatsApp en una nueva pestaña
             window.open(whatsappUrl, '_blank');
         }
         
-        // Manejo del Formulario de Contacto (AHORA ENVÍA A WHATSAPP)
+        // Manejo del Formulario de Contacto (Consulta General)
         document.getElementById('contact-form').addEventListener('submit', function(event) {
             event.preventDefault();
             const formStatus = document.getElementById('form-status');
@@ -344,10 +770,8 @@ Mi pedido de platos es el siguiente (por favor, reemplaza esta línea con la lis
             const whatsapp = document.getElementById('whatsapp').value; 
             const message = document.getElementById('message').value;
 
-            // 1. Ocultar mensaje de estado previo
             formStatus.classList.add('hidden');
 
-            // 2. Crear mensaje de WhatsApp con los datos
             const whatsappMessage = `*Nueva Consulta desde la Web:*
 Nombre: ${name}
 WhatsApp: ${whatsapp}
@@ -358,22 +782,20 @@ _Por favor, agrégalo a la lista de difusión para recibir el menú semanal._`;
             const encodedMessage = encodeURIComponent(whatsappMessage);
             const whatsappUrl = `https://wa.me/${WHATSAPP_CONTACT_NUMBER}?text=${encodedMessage}`;
 
-            // 3. Abrir WhatsApp (y simular que el envío está listo, aunque el usuario debe presionar "Enviar" en WhatsApp)
             window.open(whatsappUrl, '_blank');
             
-            // 4. Mostrar mensaje de confirmación
             formStatus.textContent = `¡Todo listo! Se abrirá WhatsApp para enviar tu consulta a ${name}.`;
             formStatus.classList.remove('hidden', 'text-gray-500', 'text-primary');
             formStatus.classList.add('text-green-600', 'font-semibold');
             
-            // Opcional: Limpiar solo el campo de mensaje para que el usuario pueda enviar otra consulta
             document.getElementById('message').value = '';
         });
 
-        // Inicializar la renderización de combos y platos al cargar la página
+        // Inicializar la renderización de combos y el estado de platos al cargar la página
         window.onload = () => {
+            initializeDishQuantities();
             renderCombos();
-            renderPlatos();
+            updateTotalCount(); // Inicializa el botón final como deshabilitado
         };
     </script>
 
